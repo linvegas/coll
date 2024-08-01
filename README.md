@@ -8,7 +8,7 @@ This not a media tagger for movies, comics or music. It's targeted for personal 
 
 ## Example
 
-```shell
+```
 $ python coll.py import ./funny-meme.jpg
 
 Preview media before prompt tags? [y/n]: n
@@ -23,12 +23,12 @@ Tags (separated by spaces): cat confusing cursed
 For now, `git clone` this repo and:
 
 ```shell
-$ python coll.py --help
+python coll.py --help
 ```
 
-You can setup a different library path and database path using a `config.py`.
+You can setup a different library path and database path using a config.py.
 
-config.py:
+`config.py`:
 
 ```python
 import os
