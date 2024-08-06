@@ -57,7 +57,20 @@ def import_media(file_list: list[str]):
         if file and os.path.exists(file):
             extension = os.path.splitext(file)[1]
             filename = uuid.uuid4().hex
-            destination = os.path.join(COLL_PATH, filename + extension)
+
+            media_dir = mimetypes.guess_type(file)[0].split('/')
+
+            if media_dir[1] == "gif":
+                media_dir = media_dir[1]
+            else:
+                media_dir = media_dir[0]
+
+            destination = os.path.join(COLL_PATH, media_dir, filename + extension)
+
+            media_type_dir = os.path.join(COLL_PATH, media_dir)
+
+            if not os.path.exists(media_type_dir):
+                os.mkdir(media_type_dir)
 
             shutil.copy(file, destination)
 
@@ -246,13 +259,16 @@ def clean():
         print("DELETED:", DB_PATH)
 
         if os.path.exists(COLL_PATH):
-            for root, _, files in os.walk(COLL_PATH):
+            # shutil.rmtree(COLL_PATH)
+            # print("DELETED:", COLL_PATH)
+
+            for root, dirs, files in os.walk(COLL_PATH, topdown=False):
                 for file in files:
                     os.remove(os.path.join(root, file))
                     print(f"DELETED: {root}/{file}")
-                    # for dir in dirs:
-                    #     os.rmdir(os.path.join(root, dir))
-                    #     print(f"DELETED: {root}/{dir}")
+                for dir in dirs:
+                    os.rmdir(os.path.join(root, dir))
+                    print(f"DELETED: {root}/{dir}")
 
             os.rmdir(COLL_PATH)
             print("DELETED:", COLL_PATH)
